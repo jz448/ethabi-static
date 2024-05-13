@@ -1,5 +1,6 @@
 //! Ethereum ABI static types and impls
-use ethereum_types::U256;
+
+use ethers::types::{I256, U256};
 
 /// Provides statically generated Eth ABI decode implementation
 pub trait DecodeStatic<'a>: Sized {
@@ -125,6 +126,57 @@ impl<'a> DecodeStatic<'a> for u16 {
 impl<'a> DecodeStatic<'a> for u8 {
     fn decode_static(buf: &'a [u8], offset: usize) -> Result<Self, ()> {
         Ok(buf[offset + 31])
+    }
+}
+
+impl<'a> DecodeStatic<'a> for I256 {
+    fn decode_static(buf: &'a [u8], offset: usize) -> Result<Self, ()> {
+        let result = U256::from(slice_as_array(unsafe {
+            buf.get_unchecked(offset..offset + 32_usize)
+        }));
+        Ok(I256::from_raw(result))
+    }
+}
+
+impl<'a> DecodeStatic<'a> for i128 {
+    fn decode_static(buf: &'a [u8], offset: usize) -> Result<Self, ()> {
+        let result = i128::from_be_bytes(*slice_as_array(unsafe {
+            buf.get_unchecked(offset + 16..offset + 32_usize)
+        }));
+        Ok(result)
+    }
+}
+
+impl<'a> DecodeStatic<'a> for i64 {
+    fn decode_static(buf: &'a [u8], offset: usize) -> Result<Self, ()> {
+        let result = i64::from_be_bytes(*slice_as_array(unsafe {
+            buf.get_unchecked(offset + 24..offset + 32_usize)
+        }));
+        Ok(result)
+    }
+}
+
+impl<'a> DecodeStatic<'a> for i32 {
+    fn decode_static(buf: &'a [u8], offset: usize) -> Result<Self, ()> {
+        let result = i32::from_be_bytes(*slice_as_array(unsafe {
+            buf.get_unchecked(offset + 28..offset + 32_usize)
+        }));
+        Ok(result)
+    }
+}
+
+impl<'a> DecodeStatic<'a> for i16 {
+    fn decode_static(buf: &'a [u8], offset: usize) -> Result<Self, ()> {
+        let result = i16::from_be_bytes(*slice_as_array(unsafe {
+            buf.get_unchecked(offset + 30..offset + 32_usize)
+        }));
+        Ok(result)
+    }
+}
+
+impl<'a> DecodeStatic<'a> for i8 {
+    fn decode_static(buf: &'a [u8], offset: usize) -> Result<Self, ()> {
+        Ok(buf[offset + 31] as i8)
     }
 }
 

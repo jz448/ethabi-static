@@ -9,7 +9,8 @@ repository = "https://github.com/jordy25519/ethabi-static"
 [dependencies]
 bumpalo = { version = "*", features = ["collections"], optional = true}
 ethabi-static-derive = { path = "./derive", version = "0.1.0" }
-ethereum-types = "*"
+# ethereum-types = "*"
+ethers = { version = "2.0" }
 
 [workspace]
 members = ["derive", "tests"]
