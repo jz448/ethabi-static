@@ -1,6 +1,6 @@
 //! Ethereum ABI static types and impls
 
-use ethers::types::{I256, U256};
+use ethereum_types::U256;
 
 /// Provides statically generated Eth ABI decode implementation
 pub trait DecodeStatic<'a>: Sized {
@@ -126,15 +126,6 @@ impl<'a> DecodeStatic<'a> for u16 {
 impl<'a> DecodeStatic<'a> for u8 {
     fn decode_static(buf: &'a [u8], offset: usize) -> Result<Self, ()> {
         Ok(buf[offset + 31])
-    }
-}
-
-impl<'a> DecodeStatic<'a> for I256 {
-    fn decode_static(buf: &'a [u8], offset: usize) -> Result<Self, ()> {
-        let result = U256::from(slice_as_array(unsafe {
-            buf.get_unchecked(offset..offset + 32_usize)
-        }));
-        Ok(I256::from_raw(result))
     }
 }
 
