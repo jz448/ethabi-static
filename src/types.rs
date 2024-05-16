@@ -12,7 +12,7 @@ pub trait DecodeStatic<'a>: Sized {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct AddressZcp<'a>(pub &'a [u8; 20]);
 
 impl<'a> AsRef<[u8; 20]> for AddressZcp<'a> {
