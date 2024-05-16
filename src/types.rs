@@ -21,6 +21,12 @@ impl<'a> AsRef<[u8; 20]> for AddressZcp<'a> {
     }
 }
 
+impl<'a> Default for AddressZcp<'a> {
+    fn default() -> Self {
+        Self(&[0; 20])
+    }
+}
+
 impl<'a> AddressZcp<'a> {
     fn new(buf: &'a [u8]) -> Self {
         Self(slice_as_array(buf))
